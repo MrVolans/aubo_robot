@@ -64,16 +64,18 @@ AuboDriver::AuboDriver(int num = 0):delay_clear_times(0),buffer_size_(400),io_fl
     rib_status_.data.resize(3);
 
     /** publish messages **/
+
+
     joint_states_pub_ = nh_.advertise<sensor_msgs::JointState>("joint_states", 300);
     joint_feedback_pub_ = nh_.advertise<control_msgs::FollowJointTrajectoryFeedback>("feedback_states", 100);
-    joint_target_pub_ = nh_.advertise<std_msgs::Float32MultiArray>("/aubo_driver/real_pose", 50);
+    joint_target_pub_ = nh_.advertise<std_msgs::Float32MultiArray>("aubo_driver/real_pose", 50);
     robot_status_pub_ = nh_.advertise<industrial_msgs::RobotStatus>("robot_status", 100);
-    io_pub_ = nh_.advertise<aubo_msgs::IOState>("/aubo_driver/io_states", 10);
-    rib_pub_ = nh_.advertise<std_msgs::Int32MultiArray>("/aubo_driver/rib_status", 100);
+    io_pub_ = nh_.advertise<aubo_msgs::IOState>("aubo_driver/io_states", 10);
+    rib_pub_ = nh_.advertise<std_msgs::Int32MultiArray>("aubo_driver/rib_status", 100);
     cancle_trajectory_pub_ = nh_.advertise<std_msgs::UInt8>("aubo_driver/cancel_trajectory",100);
-    io_srv_ = nh_.advertiseService("/aubo_driver/set_io",&AuboDriver::setIO, this);
-    ik_srv_ = nh_.advertiseService("/aubo_driver/get_ik",&AuboDriver::getIK, this);
-    fk_srv_ = nh_.advertiseService("/aubo_driver/get_fk",&AuboDriver::getFK, this);
+    io_srv_ = nh_.advertiseService("aubo_driver/set_io",&AuboDriver::setIO, this);
+    ik_srv_ = nh_.advertiseService("aubo_driver/get_ik",&AuboDriver::getIK, this);
+    fk_srv_ = nh_.advertiseService("aubo_driver/get_fk",&AuboDriver::getFK, this);
 
     /** subscribe topics **/
     trajectory_execution_subs_ = nh_.subscribe("trajectory_execution_event", 10, &AuboDriver::trajectoryExecutionCallback,this);
@@ -524,7 +526,7 @@ bool AuboDriver::connectToRobotController()
     int ret2 = aubo_robot_namespace::InterfaceCallSuccCode;
 
     std::string s;
-    ros::param::get("/aubo_driver/server_host", s); //The server_host should be corresponding to the robot controller setup.
+    ros::param::get("aubo_driver/server_host", s); //The server_host should be corresponding to the robot controller setup.
     server_host_ = (s=="")? "127.0.0.1" : s;
     std::cout<<"server_host:"<<server_host_<<std::endl;
 

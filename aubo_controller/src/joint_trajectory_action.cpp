@@ -483,7 +483,7 @@ int main(int argc, char** argv)
   {
     sleep(1);
     ROS_INFO("Waiting for the robot description to start up!");
-  }
+  } 
   if(robot_name == "aubo_i5")
       controller_name = "aubo_i5_controller/follow_joint_trajectory";
   else if(robot_name == "aubo_i3")
@@ -500,7 +500,7 @@ int main(int argc, char** argv)
           controller_name = "aubo_e5_controller/follow_joint_trajectory";
   else if(robot_name == "aubo_e3")
           controller_name = "aubo_e3_controller/follow_joint_trajectory";
-
+  printf("controller_name:%s\n",controller_name.c_str());
   JointTrajectoryAction action(controller_name);
   action.run();
 
